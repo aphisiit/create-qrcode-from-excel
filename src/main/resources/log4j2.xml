@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="error" monitorInterval="30">
+
+    <Properties>
+        <Property name="PID">????</Property>
+        <Property name="LOG_PATTERN">%clr{%d{yyyy-MM-dd HH:mm:ss.SSS}}{faint} %clr{%5p} %clr{${sys:PID}}{magenta} %clr{---}{faint} %clr{[%15.15t]}{faint} %clr{%-40.40c{1.}}{cyan} %clr{:}{faint} %m%n%wEx</Property>
+    </Properties>
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+        <RollingFile name="ACCESSLOGROLLING" fileName="${sys:java.io.tmpdir}/gwf-access.log"
+                     filePattern="${sys:java.io.tmpdir}/$${date:yyyy-MM}/jbpm-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="%d %-5p [%t] %C{2} (%F:%L) - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy /><!-- Rotated everyday -->
+                <SizeBasedTriggeringPolicy size="30 MB"/> <!-- Or every 100 MB -->
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingFile>
+        <RollingFile name="GWF" fileName="${sys:java.io.tmpdir}/gwf.log"
+                     filePattern="${sys:java.io.tmpdir}/$${date:yyyy-MM}/jbpm-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="%d %-5p [%t] %C{2} (%F:%L) - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy /><!-- Rotated everyday -->
+                <SizeBasedTriggeringPolicy size="30 MB"/> <!-- Or every 100 MB -->
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingFile>
+        <RollingFile name="GWFERROR" fileName="${sys:java.io.tmpdir}/gwf-error.log"
+                     filePattern="${sys:java.io.tmpdir}/$${date:yyyy-MM}/jbpmerror-%d{yyyy-MM-dd}-%i.log.gz">
+            <PatternLayout pattern="%d %-5p [%t] %C{2} (%F:%L) - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy /><!-- Rotated everyday -->
+                <SizeBasedTriggeringPolicy size="30 MB"/> <!-- Or every 100 MB -->
+            </Policies>
+            <DefaultRolloverStrategy max="20"/>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="org.hibernate" level="warn" additivity="false"/>
+
+        <Logger name="org.springframework" level="error" additivity="false">
+            <AppenderRef ref="GWFERROR"/>
+        </Logger>
+        <Logger name="com.spt.app" level="error" additivity="false">
+            <AppenderRef ref="GWFERROR"/>
+        </Logger>
+        <Logger name="com.spt.app" level="debug" additivity="false">
+            <AppenderRef ref="GWF"/>
+        </Logger>
+        <logger name="com.spt.app.aop.AccessLoggingAspect" level="INFO" additivity="false">
+            <appender-ref ref="ACCESSLOGROLLING" />
+        </logger>
+
+        <Root level="warn">
+            <AppenderRef ref="Console"/>
+        </Root>
+    </Loggers>
+</Configuration>
