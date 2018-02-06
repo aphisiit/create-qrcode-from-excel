@@ -39,23 +39,39 @@
     <div class="container">
 
         <h1 style="text-align: center">Test Application</h1>
-        <div style="text-align: center">
+        <div class="col-sm-12" style="text-align: center; margin-bottom: 5%;">
             <!--<input type="button"  value="Get it !"/>-->
-            <input accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                   class="btn btn-primary btn-file" style="position: relative; overflow: hidden;" id="btn_get_it" type="file"  value="Get it !"/>
+            <div class="form-group">
+                <!--<input accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"-->
+                       <!--class="btn btn-primary btn-file" style="position: relative; overflow: hidden;" id="btn_get_it" type="file"  value="Get it !"/>-->
+                <div class="col-sm-12">
+                    <h4>Input Groups</h4>
+                    <div class="col-sm-12">
+                        <div class="input-group">
+                            <label class="input-group-btn">
+                                <span class="btn btn-primary">
+                                    Browse&hellip; <input type="file" style="display: none;"/>
+                                </span>
+                            </label>
+                            <input type="text" class="form-control" readonly="true"/>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <input id="btn_download" value="Download Now" type="button" class="btn btn-primary"/>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-            <input id="btn_download" value="Download Now" type="button" class="btn btn-primary"/>
-            <!--<div class="col-lg-6 col-sm-6 col-12">-->
-                <!--<h4>Input Groups</h4>-->
-                <!--<div class="input-group">-->
-                    <!--<label class="input-group-btn">-->
-                        <!--<span class="btn btn-primary">-->
-                            <!--Browse&hellip; <input type="file" style="display: none;"/>-->
-                        <!--</span>-->
-                    <!--</label>-->
-                    <!--<input type="text" class="form-control" readonly/>-->
-                <!--</div>-->
-            <!--</div>-->
+        <div class="col-sm-12">
+            <form class="form-group" method="post" action="/excelQrcode/createQR">
+                <div class="col-sm-12" style="margin-bottom: 1%">
+                    <textarea placeholder="Past text to generate QRCode" class="form-control" rows="4" cols="50" name="text"></textarea>
+                </div>
+                <div class="col-sm-12" style="margin-bottom: 1%">
+                    <button class="btn btn-success" type="submit">Create QR</button>
+                </div>
+            </form>
         </div>
 
         <script>

@@ -32,6 +32,7 @@ public class QRCodeController {
 
     @GetMapping(value = "/qrcode")
     @ResponseBody
+    @SuppressWarnings("Duplicates")
     public ResponseEntity<Resource> serveFile(@RequestParam("text") String text) {
 
         LOGGER.info("RequestParam : {}",text);
@@ -40,6 +41,27 @@ public class QRCodeController {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Type","image/png");
         headers.add("Content-Disposition","attachment; filename*=UTF8''" + text.substring(text.lastIndexOf("/") + 1) + ".png");
+
+        try{
+            return ResponseEntity.ok()
+                    .headers(headers)
+                    .body(new ByteArrayResource(qrCodeService.generateQRCode(text, 512, 512)));
+        }catch (Exception ex){
+            throw new InternalServerError("Error While generating QRCode {}",ex);
+        }
+    }
+
+    @PostMapping(value = "/createQR")
+    @ResponseBody
+    @SuppressWarnings("Duplicates")
+    public ResponseEntity<Resource> createQR(@RequestParam("text") String text){
+        LOGGER.info("RequestParam : {}",text);
+//        LOGGER.info("subString Text : {}",text.substring(text.lastIndexOf("/") + 1));
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Type","image/png");
+//        headers.add("Content-Disposition","attachment; filename*=UTF8''" + text.substring(text.lastIndexOf("/") + 1) + ".png");
+        headers.add("Content-Disposition","attachment; filename*=UTF8''" + "qr.png");
 
         try{
             return ResponseEntity.ok()
